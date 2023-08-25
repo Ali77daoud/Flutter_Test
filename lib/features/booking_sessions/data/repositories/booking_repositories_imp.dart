@@ -23,8 +23,8 @@ class BookingRepositoryImpl implements BookingRepository {
       SessionsEntity sessionsEntity) async {
     final sessionModel = SessionsModel(
         instructorName: sessionsEntity.instructorName,
-        day: sessionsEntity.instructorName,
-        time: sessionsEntity.instructorName,
+        day: sessionsEntity.day,
+        time: sessionsEntity.time,
         userId: sessionsEntity.userId);
     try {
       final res = await bookingLocalDataSource.bookSession(sessionModel);

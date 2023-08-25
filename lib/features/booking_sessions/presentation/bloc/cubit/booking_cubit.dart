@@ -32,6 +32,18 @@ class BookingCubit extends Cubit<BookingState> {
   late InstructorEntity instructorData;
   late List<SessionsEntity> sessionsData;
 
+  bool isLoading = false;
+
+  void showLoadingScreen() {
+    isLoading = true;
+    emit(BookSessionLoadingState(isLoading: isLoading));
+  }
+
+  void hideLoadingScreen() {
+    isLoading = false;
+    emit(BookSessionLoadingState(isLoading: isLoading));
+  }
+
   void chooseValueFromDropDown(DropDownType type, String value) {
     switch (type) {
       case DropDownType.instructor:

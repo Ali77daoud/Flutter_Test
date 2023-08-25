@@ -17,6 +17,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bookingCubit = BookingCubit.get(context);
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -49,7 +50,7 @@ class MainScreen extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
               backgroundColor: AppColors.secondary,
               onPressed: () {
-                BookingCubit.get(context).getInstructorData();
+                bookingCubit.getInstructorData();
                 AutoRouter.of(context).push(AddSessionRoute());
               },
               child: const Icon(
@@ -58,7 +59,6 @@ class MainScreen extends StatelessWidget {
               )),
           body: BlocBuilder<BookingCubit, BookingState>(
             builder: (context, state) {
-              final bookingCubit = BookingCubit.get(context);
               if (state is GetDataLoadingState) {
                 return Container(
                   width: double.infinity,
@@ -82,9 +82,10 @@ class MainScreen extends StatelessWidget {
                         child: ListView.separated(
                             itemBuilder: (context, index) {
                               return SessionWidget(
-                                  name: 'Ali',
-                                  day: 'Friday',
-                                  time: '9 PM',
+                                  name: bookingCubit
+                                      .sessionsData[index].instructorName,
+                                  day: bookingCubit.sessionsData[index].day,
+                                  time: bookingCubit.sessionsData[index].time,
                                   index: index);
                             },
                             separatorBuilder: (context, index) {

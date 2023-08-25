@@ -85,3 +85,12 @@ class GetAllSessionSuccessState extends BookingState {
   @override
   List<Object> get props => [res];
 }
+
+class BookSessionLoadingState extends BookingState {
+  final bool isLoading;
+
+  const BookSessionLoadingState({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
+}
