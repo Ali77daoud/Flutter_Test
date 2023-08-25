@@ -139,15 +139,17 @@ class LoginScreen extends StatelessWidget {
               backgroundColor: AppColors.secondary,
               title: 'LOGIN',
               onPress: () async {
-                if (formKey.currentState!.validate()) {
-                  authCubit.showLoadingScreen();
-                  ///////////////////////
-                  final userEntity = UserEntity(
-                    userName: userNameKey.text,
-                    password: passKey.text,
-                  );
-                  await authCubit.login(userEntity);
-                }
+                AutoRouter.of(context).pushAndPopUntil(const MainRoute(),
+                    predicate: (route) => false);
+                // if (formKey.currentState!.validate()) {
+                //   authCubit.showLoadingScreen();
+                //   ///////////////////////
+                //   final userEntity = UserEntity(
+                //     userName: userNameKey.text,
+                //     password: passKey.text,
+                //   );
+                //   await authCubit.login(userEntity);
+                // }
               },
             ),
             ///////

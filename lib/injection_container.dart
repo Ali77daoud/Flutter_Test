@@ -1,4 +1,5 @@
 import 'package:flutter_test_app/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/route/routes.dart';
@@ -29,7 +30,10 @@ Future<void> init() async {
         localDataBase: sl.call(),
       ));
 
-  ////////////
+  /// 1. bookin sessions
+  // bloc /////////////////////////////////////////////////
+  sl.registerFactory(() => BookingCubit());
+  /////////////////////////////////////////////////////////
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
 

@@ -14,54 +14,58 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryDark,
-          centerTitle: true,
-          title: TextWidget(
-              text: 'Your Sessions',
-              color: AppColors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.center,
-              maxline: 1),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.logout,
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.primaryDark,
+            centerTitle: true,
+            title: TextWidget(
+                text: 'Your Sessions',
                 color: AppColors.white,
-              ),
-              onPressed: () async {
-                await di.sl<SharedPreferences>().setBool('IS_LOGIN', false);
-                isLogin = false;
-                ////////////
-                // ignore: use_build_context_synchronously
-                AutoRouter.of(context)
-                    .pushAndPopUntil(LoginRoute(), predicate: (route) => false);
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                maxline: 1),
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                  color: AppColors.white,
+                ),
+                onPressed: () async {
+                  await di.sl<SharedPreferences>().setBool('IS_LOGIN', false);
+                  isLogin = false;
+                  ////////////
+                  // ignore: use_build_context_synchronously
+                  AutoRouter.of(context).pushAndPopUntil(LoginRoute(),
+                      predicate: (route) => false);
+                },
+              )
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+              backgroundColor: AppColors.secondary,
+              onPressed: () {
+                AutoRouter.of(context).push(AddSessionRoute());
               },
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: AppColors.secondary,
-            onPressed: () {},
-            child: const Icon(
-              Icons.add_box_outlined,
-              color: AppColors.primaryDark,
-            )),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: ListView.separated(
-              itemBuilder: (context, index) {
-                return SessionWidget(
-                    name: 'Ali', day: 'Friday', time: '9 PM', index: index);
-              },
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 10,
-                );
-              },
-              itemCount: 3),
-        ));
+              child: const Icon(
+                Icons.add_box_outlined,
+                color: AppColors.primaryDark,
+              )),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return SessionWidget(
+                      name: 'Ali', day: 'Friday', time: '9 PM', index: index);
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 10,
+                  );
+                },
+                itemCount: 3),
+          )),
+    );
   }
 }

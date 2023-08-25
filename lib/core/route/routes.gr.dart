@@ -8,59 +8,98 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i6;
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/login_screen.dart'
-    as _i1;
-import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/signup_screen.dart'
-    as _i3;
-import 'package:flutter_test_app/features/auth/presentation/pages/welcome_screens/splash_screen.dart'
-    as _i4;
-import 'package:flutter_test_app/features/booking_sessions/presentation/pages/main_screen.dart'
     as _i2;
+import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/signup_screen.dart'
+    as _i4;
+import 'package:flutter_test_app/features/auth/presentation/pages/welcome_screens/splash_screen.dart'
+    as _i5;
+import 'package:flutter_test_app/features/booking_sessions/presentation/pages/add_session_screen.dart'
+    as _i1;
+import 'package:flutter_test_app/features/booking_sessions/presentation/pages/main_screen.dart'
+    as _i3;
 
-abstract class $AppRouter extends _i5.RootStackRouter {
+abstract class $AppRouter extends _i6.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
+  final Map<String, _i6.PageFactory> pagesMap = {
+    AddSessionRoute.name: (routeData) {
+      final args = routeData.argsAs<AddSessionRouteArgs>(
+          orElse: () => const AddSessionRouteArgs());
+      return _i6.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i1.AddSessionScreen(key: args.key),
+      );
+    },
     LoginRoute.name: (routeData) {
       final args = routeData.argsAs<LoginRouteArgs>(
           orElse: () => const LoginRouteArgs());
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i1.LoginScreen(key: args.key),
+        child: _i2.LoginScreen(key: args.key),
       );
     },
     MainRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.MainScreen(),
+        child: const _i3.MainScreen(),
       );
     },
     SignUpRoute.name: (routeData) {
       final args = routeData.argsAs<SignUpRouteArgs>(
           orElse: () => const SignUpRouteArgs());
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i3.SignUpScreen(key: args.key),
+        child: _i4.SignUpScreen(key: args.key),
       );
     },
     SplashRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.SplashScreen(),
+        child: const _i5.SplashScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.LoginScreen]
-class LoginRoute extends _i5.PageRouteInfo<LoginRouteArgs> {
+/// [_i1.AddSessionScreen]
+class AddSessionRoute extends _i6.PageRouteInfo<AddSessionRouteArgs> {
+  AddSessionRoute({
+    _i7.Key? key,
+    List<_i6.PageRouteInfo>? children,
+  }) : super(
+          AddSessionRoute.name,
+          args: AddSessionRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'AddSessionRoute';
+
+  static const _i6.PageInfo<AddSessionRouteArgs> page =
+      _i6.PageInfo<AddSessionRouteArgs>(name);
+}
+
+class AddSessionRouteArgs {
+  const AddSessionRouteArgs({this.key});
+
+  final _i7.Key? key;
+
+  @override
+  String toString() {
+    return 'AddSessionRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i2.LoginScreen]
+class LoginRoute extends _i6.PageRouteInfo<LoginRouteArgs> {
   LoginRoute({
-    _i6.Key? key,
-    List<_i5.PageRouteInfo>? children,
+    _i7.Key? key,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           LoginRoute.name,
           args: LoginRouteArgs(key: key),
@@ -69,14 +108,14 @@ class LoginRoute extends _i5.PageRouteInfo<LoginRouteArgs> {
 
   static const String name = 'LoginRoute';
 
-  static const _i5.PageInfo<LoginRouteArgs> page =
-      _i5.PageInfo<LoginRouteArgs>(name);
+  static const _i6.PageInfo<LoginRouteArgs> page =
+      _i6.PageInfo<LoginRouteArgs>(name);
 }
 
 class LoginRouteArgs {
   const LoginRouteArgs({this.key});
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
   @override
   String toString() {
@@ -85,9 +124,9 @@ class LoginRouteArgs {
 }
 
 /// generated route for
-/// [_i2.MainScreen]
-class MainRoute extends _i5.PageRouteInfo<void> {
-  const MainRoute({List<_i5.PageRouteInfo>? children})
+/// [_i3.MainScreen]
+class MainRoute extends _i6.PageRouteInfo<void> {
+  const MainRoute({List<_i6.PageRouteInfo>? children})
       : super(
           MainRoute.name,
           initialChildren: children,
@@ -95,15 +134,15 @@ class MainRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'MainRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i3.SignUpScreen]
-class SignUpRoute extends _i5.PageRouteInfo<SignUpRouteArgs> {
+/// [_i4.SignUpScreen]
+class SignUpRoute extends _i6.PageRouteInfo<SignUpRouteArgs> {
   SignUpRoute({
-    _i6.Key? key,
-    List<_i5.PageRouteInfo>? children,
+    _i7.Key? key,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           SignUpRoute.name,
           args: SignUpRouteArgs(key: key),
@@ -112,14 +151,14 @@ class SignUpRoute extends _i5.PageRouteInfo<SignUpRouteArgs> {
 
   static const String name = 'SignUpRoute';
 
-  static const _i5.PageInfo<SignUpRouteArgs> page =
-      _i5.PageInfo<SignUpRouteArgs>(name);
+  static const _i6.PageInfo<SignUpRouteArgs> page =
+      _i6.PageInfo<SignUpRouteArgs>(name);
 }
 
 class SignUpRouteArgs {
   const SignUpRouteArgs({this.key});
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
   @override
   String toString() {
@@ -128,9 +167,9 @@ class SignUpRouteArgs {
 }
 
 /// generated route for
-/// [_i4.SplashScreen]
-class SplashRoute extends _i5.PageRouteInfo<void> {
-  const SplashRoute({List<_i5.PageRouteInfo>? children})
+/// [_i5.SplashScreen]
+class SplashRoute extends _i6.PageRouteInfo<void> {
+  const SplashRoute({List<_i6.PageRouteInfo>? children})
       : super(
           SplashRoute.name,
           initialChildren: children,
@@ -138,5 +177,5 @@ class SplashRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'SplashRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }
