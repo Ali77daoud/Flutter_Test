@@ -1,6 +1,17 @@
+import 'package:flutter_test_app/features/booking_sessions/data/data_sources/booking_local_datasource.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/repositories/booking_repository.dart';
 
 class BookingRepositoryImpl implements BookingRepository {
+  final BookingLocalDataSource bookingLocalDataSource;
+
+  BookingRepositoryImpl({required this.bookingLocalDataSource});
+
+  @override
+  InstructorEntity getInstructorsData() {
+    final res = bookingLocalDataSource.getInstructors();
+    return res;
+  }
   // final AuthLocalDataSource authLocalDataSource;
 
   // AuthRepositoryImpl({required this.authLocalDataSource});

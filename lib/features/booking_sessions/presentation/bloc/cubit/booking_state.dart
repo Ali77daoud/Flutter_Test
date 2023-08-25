@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
 
 abstract class BookingState extends Equatable {
@@ -20,10 +21,19 @@ class ChooseValueFromDropDownState extends BookingState {
   List<Object> get props => [value, type];
 }
 
-class ChangeIndexState extends BookingState {
+class ChangeFirstIndexState extends BookingState {
   final int index;
 
-  const ChangeIndexState({required this.index});
+  const ChangeFirstIndexState({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
+
+class ChangeSecondIndexState extends BookingState {
+  final int index;
+
+  const ChangeSecondIndexState({required this.index});
 
   @override
   List<Object> get props => [index];
@@ -32,3 +42,21 @@ class ChangeIndexState extends BookingState {
 class RestetDayValueState extends BookingState {}
 
 class RestetTimeValueState extends BookingState {}
+
+class GetDataLoadingState extends BookingState {
+  final bool isLoading;
+
+  const GetDataLoadingState({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
+}
+
+class GetInstructorDataSuccessState extends BookingState {
+  final InstructorEntity instructorData;
+
+  const GetInstructorDataSuccessState({required this.instructorData});
+
+  @override
+  List<Object> get props => [instructorData];
+}

@@ -1,5 +1,5 @@
-abstract class BookingRepository {
-  // Future<Either<Failure, int>> signUp(UserEntity userEntity);
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
 
-  // Future<Either<Failure, UserEntity>> login(UserEntity userEntity);
+abstract class BookingRepository {
+  InstructorEntity getInstructorsData();
 }

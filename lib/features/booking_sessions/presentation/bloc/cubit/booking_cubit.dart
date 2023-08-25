@@ -1,18 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_instructor_data_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
-import 'package:flutter_test_app/features/booking_sessions/presentation/pages/test_data.dart';
 import 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit() : super(BookingInitialState());
+  final GetInstructorsDataUseCase getInstructorsDataUseCase;
+
+  BookingCubit({required this.getInstructorsDataUseCase})
+      : super(BookingInitialState());
 
   static BookingCubit get(context) => BlocProvider.of(context);
 
-  String instructor = instructorData.instructors[0].name;
-  String day = instructorData.instructors[0].availableDays[0];
-  String time = instructorData.instructors[0].availableTimeRanges[0].time[0];
+  late String instructor;
+  late String day;
+  late String time;
 
   int firstIndex = 0;
+  int secondIndex = 0;
+
+  late InstructorEntity instructorData;
 
   void chooseValueFromDropDown(DropDownType type, String value) {
     switch (type) {
@@ -34,16 +41,26 @@ class BookingCubit extends Cubit<BookingState> {
   void changeFirstIndex() {
     if (instructor == '') {
       firstIndex = 0;
-      emit(const ChangeIndexState(index: 0));
+      emit(const ChangeFirstIndexState(index: 0));
     } else if (instructor == 'Instructor 1') {
       firstIndex = 1;
-      emit(const ChangeIndexState(index: 1));
+      emit(const ChangeFirstIndexState(index: 1));
     } else if (instructor == 'Instructor 2') {
       firstIndex = 2;
-      emit(const ChangeIndexState(index: 2));
+      emit(const ChangeFirstIndexState(index: 2));
     } else if (instructor == 'Instructor 3') {
       firstIndex = 3;
-      emit(const ChangeIndexState(index: 3));
+      emit(const ChangeFirstIndexState(index: 3));
+    }
+  }
+
+  void changeSecondIndex() {
+    if (instructor == 'Instructor 3' && day == 'Saturday') {
+      secondIndex = 1;
+      emit(const ChangeSecondIndexState(index: 1));
+    } else {
+      secondIndex = 0;
+      emit(const ChangeSecondIndexState(index: 0));
     }
   }
 
@@ -58,6 +75,17 @@ class BookingCubit extends Cubit<BookingState> {
         instructorData.instructors[firstIndex].availableTimeRanges[0].time[0];
 
     emit(RestetTimeValueState());
+  }
+
+  void getInstructorData() {
+    final data = getInstructorsDataUseCase.call();
+    ///////
+    instructor = data.instructors[0].name;
+    day = data.instructors[0].availableDays[0];
+    time = data.instructors[0].availableTimeRanges[0].time[0];
+    ////////
+    instructorData = data;
+    emit(GetInstructorDataSuccessState(instructorData: data));
   }
   // final LoginUseCase loginUseCase;
   // final SignUpUseCase signUpUseCase;

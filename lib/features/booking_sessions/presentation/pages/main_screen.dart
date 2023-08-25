@@ -4,6 +4,7 @@ import 'package:flutter_test_app/core/constants/color_constants.dart';
 import 'package:flutter_test_app/core/route/routes.gr.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/core/widgets/text_widget.dart';
+import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/widgets/session_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart' as di;
@@ -46,6 +47,7 @@ class MainScreen extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
               backgroundColor: AppColors.secondary,
               onPressed: () {
+                BookingCubit.get(context).getInstructorData();
                 AutoRouter.of(context).push(AddSessionRoute());
               },
               child: const Icon(

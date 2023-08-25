@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_app/core/constants/color_constants.dart';
 import 'package:flutter_test_app/core/utils/screen_size_utils.dart';
+import 'package:flutter_test_app/core/widgets/app_buttons.dart';
 import 'package:flutter_test_app/core/widgets/text_widget.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
-import 'package:flutter_test_app/features/booking_sessions/presentation/pages/test_data.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/widgets/custom_dropdown_widget.dart';
 import '../bloc/cubit/booking_cubit.dart';
 import '../bloc/cubit/booking_state.dart';
@@ -21,6 +21,15 @@ class AddSessionScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: AppColors.primaryDark,
             centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: AppColors.white,
+              ),
+              onPressed: () {
+                AutoRouter.of(context).pop();
+              },
+            ),
             title: TextWidget(
                 text: 'Add Session',
                 color: AppColors.white,
@@ -58,7 +67,7 @@ class AddSessionScreen extends StatelessWidget {
                             },
                             labelText: 'Instructor Name',
                             hintText: 'Choose Instructor Name',
-                            items: instructorData.instructors
+                            items: bookingCubit.instructorData.instructors
                                 .map((e) => e.name)
                                 .toList()),
                         SizedBox(
@@ -70,10 +79,15 @@ class AddSessionScreen extends StatelessWidget {
                             onChange: (String? newValue) {
                               bookingCubit.chooseValueFromDropDown(
                                   DropDownType.day, newValue.toString());
+                              //////////
+                              bookingCubit.changeSecondIndex();
+                              //////////
+                              bookingCubit.resetTimeValue();
                             },
                             labelText: 'Available Days',
                             hintText: 'Choose Day',
-                            items: instructorData
+                            items: bookingCubit
+                                .instructorData
                                 .instructors[bookingCubit.firstIndex]
                                 .availableDays),
                         SizedBox(
@@ -88,13 +102,21 @@ class AddSessionScreen extends StatelessWidget {
                             },
                             labelText: 'Available Times',
                             hintText: 'Choose Time',
-                            items: instructorData
+                            items: bookingCubit
+                                .instructorData
                                 .instructors[bookingCubit.firstIndex]
-                                .availableTimeRanges[0]
+                                .availableTimeRanges[bookingCubit.secondIndex]
                                 .time),
                         SizedBox(
                           height:
-                              ScreenSizeUtils.getHeightInPercent(context, 3),
+                              ScreenSizeUtils.getHeightInPercent(context, 7),
+                        ),
+                        AppButton.normalButton(
+                          backgroundColor: AppColors.secondary,
+                          title: 'Book Session',
+                          onPress: () async {
+                            if (formKey.currentState!.validate()) {}
+                          },
                         ),
                       ],
                     ),
