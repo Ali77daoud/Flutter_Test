@@ -1,6 +1,8 @@
 import 'package:flutter_test_app/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/data/data_sources/booking_local_datasource.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/repositories/booking_repository.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/book_session_usecase.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_all_sessions_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_instructor_data_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -34,18 +36,24 @@ Future<void> init() async {
         localDataBase: sl.call(),
       ));
 
-  /// 1. bookin sessions
+  /// 1. booking sessions
   // bloc /////////////////////////////////////////////////
-  sl.registerFactory(() => BookingCubit(getInstructorsDataUseCase: sl.call()));
+  sl.registerFactory(() => BookingCubit(
+        getInstructorsDataUseCase: sl.call(),
+        bookSessionUseCase: sl.call(),
+        getAllSessionsUseCase: sl.call(),
+      ));
   // useCase //////////////////////////////////////////////
   sl.registerLazySingleton(() => GetInstructorsDataUseCase(sl.call()));
+  sl.registerLazySingleton(() => BookSessionUseCase(sl.call()));
+  sl.registerLazySingleton(() => GetAllSessionsUseCase(sl.call()));
   // repository ///////////////////////////////////////////
   sl.registerLazySingleton<BookingRepository>(() => BookingRepositoryImpl(
         bookingLocalDataSource: sl.call(),
       ));
   // dataSource /////////////////////////////////////////////
   sl.registerLazySingleton<BookingLocalDataSource>(
-      () => BookingLocalDataSourceImpl());
+      () => BookingLocalDataSourceImpl(localDataBase: sl.call()));
   /////////////////////////////////////////////////////////
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

@@ -30,15 +30,16 @@ class SignUpScreen extends StatelessWidget {
     final authCubit = AuthCubit.get(context);
     return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) async {
       if (state is SignUpSuccessState) {
-        authCubit.hideLoadingScreen();
-
-        AutoRouter.of(context)
-            .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
-
         await di.sl<SharedPreferences>().setBool('IS_LOGIN', true);
         isLogin = true;
         await di.sl<SharedPreferences>().setInt('USER_ID', state.res);
         userId = state.res;
+
+        // ignore: use_build_context_synchronously
+        AutoRouter.of(context)
+            .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
+
+        authCubit.hideLoadingScreen();
         // ignore: use_build_context_synchronously
         SnackBarMessage().showSnackBar(
             message: SuccessMessages.signUpSuccessMessage,
@@ -47,7 +48,6 @@ class SignUpScreen extends StatelessWidget {
       }
       if (state is SignUpErrorState) {
         authCubit.hideLoadingScreen();
-
         // ignore: use_build_context_synchronously
         SnackBarMessage().showSnackBar(
             message: state.error,

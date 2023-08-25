@@ -27,10 +27,20 @@ class LocalDataBase {
   /////////////////////////
   Future _createDB(Database db, int version) async {
     await db.execute('''
-create table ${DataBaseConst.tableName2} ( 
+create table ${DataBaseConst.tableName1} ( 
   ${DataBaseConst.id} integer primary key autoincrement, 
   ${DataBaseConst.username} text not null,
    ${DataBaseConst.password} text not null
+ )
+''');
+///////////////////
+    await db.execute('''
+create table ${DataBaseConst.tableName2} ( 
+  ${DataBaseConst.id} integer primary key autoincrement, 
+  ${DataBaseConst.instructorName} text not null,
+   ${DataBaseConst.day} text not null,
+   ${DataBaseConst.time} text not null,
+   ${DataBaseConst.userId} integer not null
  )
 ''');
   }

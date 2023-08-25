@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/sessions_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
 
 abstract class BookingState extends Equatable {
@@ -43,14 +44,7 @@ class RestetDayValueState extends BookingState {}
 
 class RestetTimeValueState extends BookingState {}
 
-class GetDataLoadingState extends BookingState {
-  final bool isLoading;
-
-  const GetDataLoadingState({required this.isLoading});
-
-  @override
-  List<Object> get props => [isLoading];
-}
+///////////////////Instructor/////////////////////////////////////////
 
 class GetInstructorDataSuccessState extends BookingState {
   final InstructorEntity instructorData;
@@ -59,4 +53,35 @@ class GetInstructorDataSuccessState extends BookingState {
 
   @override
   List<Object> get props => [instructorData];
+}
+
+/////////////BookSession/////////////////////////
+class BookSessionSuccessState extends BookingState {
+  final int res;
+
+  const BookSessionSuccessState({required this.res});
+
+  @override
+  List<Object> get props => [res];
+}
+
+class BookSessionErrorState extends BookingState {
+  final String error;
+
+  const BookSessionErrorState({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}
+
+////////////////////////////////////////////////////////////////////
+class GetDataLoadingState extends BookingState {}
+
+class GetAllSessionSuccessState extends BookingState {
+  final List<SessionsEntity> res;
+
+  const GetAllSessionSuccessState({required this.res});
+
+  @override
+  List<Object> get props => [res];
 }

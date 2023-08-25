@@ -1,14 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_app/core/constants/failure_messages.dart';
+import 'package:flutter_test_app/core/errors/failures.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/sessions_entity.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/book_session_usecase.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_all_sessions_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_instructor_data_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
 import 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
   final GetInstructorsDataUseCase getInstructorsDataUseCase;
+  final BookSessionUseCase bookSessionUseCase;
+  final GetAllSessionsUseCase getAllSessionsUseCase;
 
-  BookingCubit({required this.getInstructorsDataUseCase})
-      : super(BookingInitialState());
+  BookingCubit({
+    required this.getInstructorsDataUseCase,
+    required this.bookSessionUseCase,
+    required this.getAllSessionsUseCase,
+  }) : super(BookingInitialState());
 
   static BookingCubit get(context) => BlocProvider.of(context);
 
@@ -20,6 +30,7 @@ class BookingCubit extends Cubit<BookingState> {
   int secondIndex = 0;
 
   late InstructorEntity instructorData;
+  late List<SessionsEntity> sessionsData;
 
   void chooseValueFromDropDown(DropDownType type, String value) {
     switch (type) {
@@ -87,55 +98,35 @@ class BookingCubit extends Cubit<BookingState> {
     instructorData = data;
     emit(GetInstructorDataSuccessState(instructorData: data));
   }
-  // final LoginUseCase loginUseCase;
-  // final SignUpUseCase signUpUseCase;
 
-  // AuthCubit({required this.loginUseCase, required this.signUpUseCase})
-  //     : super(AuthInitialState());
+  /// bookSession////////////
+  Future<void> bookSession(SessionsEntity sessionsEntity) async {
+    final failureOrBookSession = await bookSessionUseCase.call(sessionsEntity);
+    failureOrBookSession.fold((failure) {
+      emit(BookSessionErrorState(error: _mapFailureToMessage(failure)));
+    }, (res) {
+      emit(BookSessionSuccessState(res: res));
+    });
+  }
 
-  // static AuthCubit get(context) => BlocProvider.of(context);
-  // bool isLoading = false;
+  ///getAllSessions////
+  void getAllSessions() async {
+    emit(GetDataLoadingState());
+    final data = await getAllSessionsUseCase.call();
+    ///////
+    sessionsData = data;
+    emit(GetAllSessionSuccessState(res: data));
+  }
 
-  // void showLoadingScreen() {
-  //   isLoading = true;
-  //   emit(LoginLoadingState(isLoading: isLoading));
-  // }
-
-  // void hideLoadingScreen() {
-  //   isLoading = false;
-  //   emit(LoginLoadingState(isLoading: isLoading));
-  // }
-
-  // /// login
-  // Future<void> login(UserEntity userEntity) async {
-  //   final failureOrLogin = await loginUseCase.call(userEntity);
-  //   failureOrLogin.fold((failure) {
-  //     emit(LoginErrorState(error: _mapFailureToMessage(failure)));
-  //   }, (login) {
-  //     /////////////
-  //     emit(LoginSuccessState(userEntity: login));
-  //   });
-  // }
-
-  // /// signup
-  // Future<void> signup(UserEntity userEntity) async {
-  //   final failureOrSignup = await signUpUseCase.call(userEntity);
-  //   failureOrSignup.fold((failure) {
-  //     emit(SignUpErrorState(error: _mapFailureToMessage(failure)));
-  //   }, (res) {
-  //     emit(SignUpSuccessState(res: res));
-  //   });
-  // }
-
-  // ////////////////////////////
-  // String _mapFailureToMessage(Failure failure) {
-  //   switch (failure.runtimeType) {
-  //     case WrongDataFailure:
-  //       return FailureMessages.wrongDataFailureMessage;
-  //     case UnExpectedFailure:
-  //       return FailureMessages.unExpectedFailureMessage;
-  //     default:
-  //       return " Unexpected error,Please try again later.";
-  //   }
-  // }
+  //////////////////////////////
+  String _mapFailureToMessage(Failure failure) {
+    switch (failure.runtimeType) {
+      case WrongDataFailure:
+        return FailureMessages.wrongDataFailureMessage;
+      case UnExpectedFailure:
+        return FailureMessages.unExpectedFailureMessage;
+      default:
+        return " Unexpected error,Please try again later.";
+    }
+  }
 }

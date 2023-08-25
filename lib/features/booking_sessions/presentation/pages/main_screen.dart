@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_app/core/constants/color_constants.dart';
 import 'package:flutter_test_app/core/route/routes.gr.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/core/widgets/text_widget.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
+import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_state.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/widgets/session_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart' as di;
@@ -54,19 +56,52 @@ class MainScreen extends StatelessWidget {
                 Icons.add_box_outlined,
                 color: AppColors.primaryDark,
               )),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return SessionWidget(
-                      name: 'Ali', day: 'Friday', time: '9 PM', index: index);
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 10,
-                  );
-                },
-                itemCount: 3),
+          body: BlocBuilder<BookingCubit, BookingState>(
+            builder: (context, state) {
+              final bookingCubit = BookingCubit.get(context);
+              if (state is GetDataLoadingState) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.white,
+                );
+              } else if (state is GetAllSessionSuccessState) {
+                return bookingCubit.sessionsData.isEmpty
+                    ? Center(
+                        child: TextWidget(
+                            text: 'Sessions Is Empty',
+                            color: AppColors.primaryDark,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                            textAlign: TextAlign.center,
+                            maxline: 2),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return SessionWidget(
+                                  name: 'Ali',
+                                  day: 'Friday',
+                                  time: '9 PM',
+                                  index: index);
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 10,
+                              );
+                            },
+                            itemCount: bookingCubit.sessionsData.length),
+                      );
+              } else {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.white,
+                );
+              }
+            },
           )),
     );
   }

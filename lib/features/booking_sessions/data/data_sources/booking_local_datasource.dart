@@ -1,10 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test_app/core/constants/database_constants.dart';
+import 'package:flutter_test_app/core/database/local_database.dart';
+import 'package:flutter_test_app/core/errors/exceptions.dart';
+import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/features/booking_sessions/data/models/instructors_model.dart';
+import 'package:flutter_test_app/features/booking_sessions/data/models/sessions_model.dart';
 
 abstract class BookingLocalDataSource {
   InstructorModel getInstructors();
+  Future<int> bookSession(SessionsModel sessionsModel);
+  Future<List<SessionsModel>> getAllSessions();
 }
 
 class BookingLocalDataSourceImpl implements BookingLocalDataSource {
+  final LocalDataBase localDataBase;
+
+  BookingLocalDataSourceImpl({required this.localDataBase});
+
   @override
   InstructorModel getInstructors() {
     final jsonInstructors = {
@@ -122,32 +134,27 @@ class BookingLocalDataSourceImpl implements BookingLocalDataSource {
 
     return instructorData;
   }
-  // final LocalDataBase localDataBase;
 
-  // AuthLocalDataSourceImpl({required this.localDataBase});
+  @override
+  Future<int> bookSession(SessionsModel sessionsModel) async {
+    final db = await localDataBase.database;
+    int res = await db.insert(DataBaseConst.tableName2, sessionsModel.toJson());
+    if (res > 0) {
+      return res;
+    } else {
+      throw UnExpectedException();
+    }
+  }
 
-  // @override
-  // Future<int> signUp(UserModel userModel) async {
-  //   final db = await localDataBase.database;
-  //   int res = await db.insert(DataBaseConst.tableName2, userModel.toJson());
-  //   if (res > 0) {
-  //     return res;
-  //   } else {
-  //     throw UnExpectedException();
-  //   }
-  // }
+  @override
+  Future<List<SessionsModel>> getAllSessions() async {
+    final db = await localDataBase.database;
 
-  // @override
-  // Future<UserModel> login(UserModel userModel) async {
-  //   final db = await localDataBase.database;
-  //   var res = await db.rawQuery(
-  //       "SELECT * FROM ${DataBaseConst.tableName2} WHERE ${DataBaseConst.username} = '${userModel.userName}' and ${DataBaseConst.password} = '${userModel.password}'");
+    final result = await db.query(DataBaseConst.tableName2,
+        where: '${DataBaseConst.userId} = ?', whereArgs: [userId]);
 
-  //   if (res.isNotEmpty) {
-  //     return UserModel.fromJson(res.first);
-  //   } else {
-  //     debugPrint(res.toString());
-  //     throw WrongDataException();
-  //   }
-  // }
+    debugPrint(result.toString());
+
+    return result.map((json) => SessionsModel.fromJson(json)).toList();
+  }
 }

@@ -33,17 +33,17 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state is LoginSuccessState) {
           /////////////
-          authCubit.hideLoadingScreen();
-
-          AutoRouter.of(context)
-              .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
-
           await di.sl<SharedPreferences>().setBool('IS_LOGIN', true);
           isLogin = true;
           await di
               .sl<SharedPreferences>()
               .setInt('USER_ID', state.userEntity.id!);
           userId = state.userEntity.id!;
+          // ignore: use_build_context_synchronously
+          AutoRouter.of(context)
+              .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
+
+          authCubit.hideLoadingScreen();
           // ignore: use_build_context_synchronously
           SnackBarMessage().showSnackBar(
               message: SuccessMessages.loginSuccessMessage,
@@ -139,17 +139,17 @@ class LoginScreen extends StatelessWidget {
               backgroundColor: AppColors.secondary,
               title: 'LOGIN',
               onPress: () async {
-                AutoRouter.of(context).pushAndPopUntil(const MainRoute(),
-                    predicate: (route) => false);
-                // if (formKey.currentState!.validate()) {
-                //   authCubit.showLoadingScreen();
-                //   ///////////////////////
-                //   final userEntity = UserEntity(
-                //     userName: userNameKey.text,
-                //     password: passKey.text,
-                //   );
-                //   await authCubit.login(userEntity);
-                // }
+                // AutoRouter.of(context).pushAndPopUntil(const MainRoute(),
+                //     predicate: (route) => false);
+                if (formKey.currentState!.validate()) {
+                  authCubit.showLoadingScreen();
+                  ///////////////////////
+                  final userEntity = UserEntity(
+                    userName: userNameKey.text,
+                    password: passKey.text,
+                  );
+                  await authCubit.login(userEntity);
+                }
               },
             ),
             ///////

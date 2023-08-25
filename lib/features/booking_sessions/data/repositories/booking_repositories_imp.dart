@@ -1,6 +1,11 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test_app/core/errors/exceptions.dart';
+import 'package:flutter_test_app/core/errors/failures.dart';
 import 'package:flutter_test_app/features/booking_sessions/data/data_sources/booking_local_datasource.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/entities/sessions_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/repositories/booking_repository.dart';
+import '../models/sessions_model.dart';
 
 class BookingRepositoryImpl implements BookingRepository {
   final BookingLocalDataSource bookingLocalDataSource;
@@ -12,31 +17,26 @@ class BookingRepositoryImpl implements BookingRepository {
     final res = bookingLocalDataSource.getInstructors();
     return res;
   }
-  // final AuthLocalDataSource authLocalDataSource;
 
-  // AuthRepositoryImpl({required this.authLocalDataSource});
+  @override
+  Future<Either<Failure, int>> bookSession(
+      SessionsEntity sessionsEntity) async {
+    final sessionModel = SessionsModel(
+        instructorName: sessionsEntity.instructorName,
+        day: sessionsEntity.instructorName,
+        time: sessionsEntity.instructorName,
+        userId: sessionsEntity.userId);
+    try {
+      final res = await bookingLocalDataSource.bookSession(sessionModel);
+      return right(res);
+    } on UnExpectedException {
+      return left(UnExpectedFailure());
+    }
+  }
 
-  // @override
-  // Future<Either<Failure, int>> signUp(UserEntity userEntity) async {
-  //   final userModel =
-  //       UserModel(password: userEntity.password, userName: userEntity.userName);
-  //   try {
-  //     final res = await authLocalDataSource.signUp(userModel);
-  //     return right(res);
-  //   } on UnExpectedException {
-  //     return left(UnExpectedFailure());
-  //   }
-  // }
-
-  // @override
-  // Future<Either<Failure, UserEntity>> login(UserEntity userEntity) async {
-  //   final userModel =
-  //       UserModel(password: userEntity.password, userName: userEntity.userName);
-  //   try {
-  //     final res = await authLocalDataSource.login(userModel);
-  //     return right(res);
-  //   } on WrongDataException {
-  //     return left(WrongDataFailure());
-  //   }
-  // }
+  @override
+  Future<List<SessionsEntity>> getAllSessions() {
+    final res = bookingLocalDataSource.getAllSessions();
+    return res;
+  }
 }
