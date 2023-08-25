@@ -34,7 +34,6 @@ class TextWidget extends StatelessWidget {
         overflow: overflow,
         decoration: textDecoration,
         color: color,
-        fontFamily: 'Montserrat',
         fontSize: fontSize,
         fontWeight: fontWeight,
       ),

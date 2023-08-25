@@ -4,16 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_app/core/constants/success_messages.dart';
 import 'package:flutter_test_app/core/route/routes.gr.dart';
 import 'package:flutter_test_app/core/utils/snackbar_message.dart';
+import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_cubit.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_state.dart';
 import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/login_screen.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/gradient_headre.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/utils/screen_size_utils.dart';
 import '../../../../../core/widgets/app_buttons.dart';
 import '../../widgets/auth_page_footer.dart';
+import '../../../../../injection_container.dart' as di;
 
 @RoutePage()
 class SignUpScreen extends StatelessWidget {
@@ -25,13 +28,18 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authCubit = AuthCubit.get(context);
-    return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
+    return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) async {
       if (state is SignUpSuccessState) {
-        context.router
-            .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
-        /////////////
         authCubit.hideLoadingScreen();
 
+        AutoRouter.of(context)
+            .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
+
+        await di.sl<SharedPreferences>().setBool('IS_LOGIN', true);
+        isLogin = true;
+        await di.sl<SharedPreferences>().setInt('USER_ID', state.res);
+        userId = state.res;
+        // ignore: use_build_context_synchronously
         SnackBarMessage().showSnackBar(
             message: SuccessMessages.signUpSuccessMessage,
             backgroundColor: Colors.green,
@@ -40,12 +48,11 @@ class SignUpScreen extends StatelessWidget {
       if (state is SignUpErrorState) {
         authCubit.hideLoadingScreen();
 
-        Future.delayed(Duration.zero, () {
-          SnackBarMessage().showSnackBar(
-              message: state.error,
-              backgroundColor: Colors.redAccent,
-              context: context);
-        });
+        // ignore: use_build_context_synchronously
+        SnackBarMessage().showSnackBar(
+            message: state.error,
+            backgroundColor: Colors.redAccent,
+            context: context);
       }
     }, builder: (context, state) {
       return SafeArea(

@@ -1,0 +1,2 @@
+bool? isLogin;
+int? userId;

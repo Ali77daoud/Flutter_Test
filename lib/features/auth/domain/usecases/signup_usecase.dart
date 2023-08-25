@@ -9,6 +9,6 @@ class SignUpUseCase {
   SignUpUseCase(this.authRepository);
 
   Future<Either<Failure, int>> call(UserEntity userEntity) async {
-    return authRepository.signUp(userEntity);
+    return await authRepository.signUp(userEntity);
   }
 }

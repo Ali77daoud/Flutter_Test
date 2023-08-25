@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/route/routes.dart';
 import 'features/auth/data/data_sources/auth_local_datasource.dart';
-import 'features/auth/data/data_sources/local_database.dart';
+import 'core/database/local_database.dart';
 import 'features/auth/data/repositories/auth_repositories_imp.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/usecases/login_usecase.dart';

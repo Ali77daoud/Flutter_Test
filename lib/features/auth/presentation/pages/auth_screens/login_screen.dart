@@ -4,16 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_app/core/constants/success_messages.dart';
 import 'package:flutter_test_app/core/route/routes.gr.dart';
 import 'package:flutter_test_app/core/utils/snackbar_message.dart';
+import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_state.dart';
 import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/signup_screen.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_page_footer.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/utils/screen_size_utils.dart';
 import '../../../../../core/widgets/app_buttons.dart';
 import '../../bloc/cubit/auth_cubit.dart';
 import '../../widgets/gradient_headre.dart';
+import '../../../../../injection_container.dart' as di;
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -27,13 +30,21 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authCubit = AuthCubit.get(context);
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is LoginSuccessState) {
-          ////////////////////
-          context.router
-              .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
           /////////////
           authCubit.hideLoadingScreen();
+
+          AutoRouter.of(context)
+              .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
+
+          await di.sl<SharedPreferences>().setBool('IS_LOGIN', true);
+          isLogin = true;
+          await di
+              .sl<SharedPreferences>()
+              .setInt('USER_ID', state.userEntity.id!);
+          userId = state.userEntity.id!;
+          // ignore: use_build_context_synchronously
           SnackBarMessage().showSnackBar(
               message: SuccessMessages.loginSuccessMessage,
               backgroundColor: Colors.green,
@@ -41,12 +52,12 @@ class LoginScreen extends StatelessWidget {
         }
         if (state is LoginErrorState) {
           authCubit.hideLoadingScreen();
-          Future.delayed(Duration.zero, () {
-            SnackBarMessage().showSnackBar(
-                message: state.error,
-                backgroundColor: Colors.redAccent,
-                context: context);
-          });
+
+          // ignore: use_build_context_synchronously
+          SnackBarMessage().showSnackBar(
+              message: state.error,
+              backgroundColor: Colors.redAccent,
+              context: context);
         }
       },
       builder: (context, state) {

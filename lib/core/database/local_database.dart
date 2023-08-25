@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../../../core/constants/database_constants.dart';
+import '../constants/database_constants.dart';
 
 class LocalDataBase {
   // static final LocalDataBase instance = LocalDataBase._init();

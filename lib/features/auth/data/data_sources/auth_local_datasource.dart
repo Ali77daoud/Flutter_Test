@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/core/constants/database_constants.dart';
 import 'package:flutter_test_app/core/errors/exceptions.dart';
-import 'package:flutter_test_app/features/auth/data/data_sources/local_database.dart';
+import 'package:flutter_test_app/core/database/local_database.dart';
 import 'package:flutter_test_app/features/auth/data/models/user_model.dart';
 
 abstract class AuthLocalDataSource {

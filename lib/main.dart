@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_theme.dart';
 import 'core/bloc_observer.dart';
 import 'core/route/routes.dart';
+import 'core/variables/app_var.dart';
 import 'features/auth/presentation/bloc/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
 
@@ -12,6 +14,10 @@ void main() async {
   await di.init();
   //////////////////////////////////////////////////////////////////
   Bloc.observer = MyBlocObserver();
+
+  isLogin = di.sl<SharedPreferences>().getBool('IS_LOGIN') ?? false;
+  userId = di.sl<SharedPreferences>().getInt('USER_ID') ?? 0;
+
   runApp(MyApp());
 }
 

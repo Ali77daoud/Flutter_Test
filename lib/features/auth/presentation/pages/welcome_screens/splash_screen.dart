@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/features/auth/data/data_sources/local_database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_test_app/core/variables/app_var.dart';
+import 'package:flutter_test_app/core/database/local_database.dart';
 import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/route/routes.gr.dart';
 import '../../../../../injection_container.dart' as di;
@@ -18,7 +18,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool selected = false;
   final localDataBase = di.sl<LocalDataBase>();
-  final isLogin = di.sl<SharedPreferences>().getBool('IS_LOGIN') ?? false;
   @override
   void initState() {
     super.initState();
@@ -31,8 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
         context.router.push(LoginRoute());
         debugPrint('$isLogin islogin');
         isLogin == false
-            ? context.router.replace(LoginRoute())
-            : context.router.replace(const MainRoute());
+            ? AutoRouter.of(context).replace(LoginRoute())
+            : AutoRouter.of(context).replace(const MainRoute());
       });
     });
   }

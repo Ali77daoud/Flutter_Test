@@ -16,7 +16,7 @@ import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/s
     as _i3;
 import 'package:flutter_test_app/features/auth/presentation/pages/welcome_screens/splash_screen.dart'
     as _i4;
-import 'package:flutter_test_app/features/booking_sessions/main_screen.dart'
+import 'package:flutter_test_app/features/booking_sessions/presentation/pages/main_screen.dart'
     as _i2;
 
 abstract class $AppRouter extends _i5.RootStackRouter {

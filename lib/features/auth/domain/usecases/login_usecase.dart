@@ -9,6 +9,6 @@ class LoginUseCase {
   LoginUseCase(this.authRepository);
 
   Future<Either<Failure, UserEntity>> call(UserEntity userEntity) async {
-    return authRepository.login(userEntity);
+    return await authRepository.login(userEntity);
   }
 }
