@@ -138,11 +138,24 @@ class BookingLocalDataSourceImpl implements BookingLocalDataSource {
   @override
   Future<int> bookSession(SessionsModel sessionsModel) async {
     final db = await localDataBase.database;
-    int res = await db.insert(DataBaseConst.tableName2, sessionsModel.toJson());
-    if (res > 0) {
-      return res;
+    final result = await db.query(DataBaseConst.tableName2,
+        where:
+            '${DataBaseConst.instructorName} = ? AND ${DataBaseConst.day} = ? AND ${DataBaseConst.time} = ?',
+        whereArgs: [
+          sessionsModel.instructorName,
+          sessionsModel.day,
+          sessionsModel.time
+        ]);
+    if (result.isEmpty) {
+      int res =
+          await db.insert(DataBaseConst.tableName2, sessionsModel.toJson());
+      if (res > 0) {
+        return res;
+      } else {
+        throw UnExpectedException();
+      }
     } else {
-      throw UnExpectedException();
+      throw InfoAlreadyExistsException();
     }
   }
 

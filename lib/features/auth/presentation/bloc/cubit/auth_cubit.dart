@@ -16,12 +16,12 @@ class AuthCubit extends Cubit<AuthState> {
   static AuthCubit get(context) => BlocProvider.of(context);
   bool isLoading = false;
 
-  void showLoadingScreen() {
+  void showLoading() {
     isLoading = true;
     emit(LoginLoadingState(isLoading: isLoading));
   }
 
-  void hideLoadingScreen() {
+  void hideLoading() {
     isLoading = false;
     emit(LoginLoadingState(isLoading: isLoading));
   }
@@ -52,6 +52,8 @@ class AuthCubit extends Cubit<AuthState> {
     switch (failure.runtimeType) {
       case WrongDataFailure:
         return FailureMessages.wrongDataFailureMessage;
+      case InfoAlreadyExistsFailure:
+        return FailureMessages.infoAlreadyExistsMessage;
       case UnExpectedFailure:
         return FailureMessages.unExpectedFailureMessage;
       default:

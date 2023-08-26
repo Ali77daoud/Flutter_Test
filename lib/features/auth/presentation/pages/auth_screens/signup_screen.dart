@@ -8,9 +8,8 @@ import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_cubit.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_state.dart';
-import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/login_screen.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:flutter_test_app/features/auth/presentation/widgets/gradient_headre.dart';
+import 'package:flutter_test_app/features/auth/presentation/widgets/gradient_header.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/utils/screen_size_utils.dart';
@@ -39,7 +38,7 @@ class SignUpScreen extends StatelessWidget {
         AutoRouter.of(context)
             .pushAndPopUntil(const RootRoute(), predicate: (route) => false);
 
-        authCubit.hideLoadingScreen();
+        authCubit.hideLoading();
         // ignore: use_build_context_synchronously
         SnackBarMessage().showSnackBar(
             message: SuccessMessages.signUpSuccessMessage,
@@ -47,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
             context: context);
       }
       if (state is SignUpErrorState) {
-        authCubit.hideLoadingScreen();
+        authCubit.hideLoading();
         // ignore: use_build_context_synchronously
         SnackBarMessage().showSnackBar(
             message: state.error,
@@ -133,7 +132,7 @@ class SignUpScreen extends StatelessWidget {
               title: 'SIGNUP',
               onPress: () async {
                 if (formKey.currentState!.validate()) {
-                  authCubit.showLoadingScreen();
+                  authCubit.showLoading();
                   /////////////////
                   final userEntity = UserEntity(
                     userName: userNameKey.text,
@@ -151,7 +150,7 @@ class SignUpScreen extends StatelessWidget {
             AuthPageFooter(
               text1: 'Already have an account?',
               text2: 'LOGIN',
-              page: LoginScreen(),
+              page: LoginRoute(),
             ),
             ///////
             SizedBox(

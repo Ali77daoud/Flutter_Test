@@ -29,26 +29,7 @@ class AddSessionScreen extends StatelessWidget {
           return true;
         },
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColors.primaryDark,
-              centerTitle: true,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: AppColors.white,
-                ),
-                onPressed: () {
-                  AutoRouter.of(context).pop();
-                },
-              ),
-              title: TextWidget(
-                  text: 'Add Session',
-                  color: AppColors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                  maxline: 1),
-            ),
+            appBar: buildAppBar(context),
             body: BlocConsumer<BookingCubit, BookingState>(
               listener: (context, state) {
                 if (state is BookSessionSuccessState) {
@@ -168,6 +149,29 @@ class AddSessionScreen extends StatelessWidget {
               },
             )),
       ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: AppColors.primaryDark,
+      centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+        ),
+        onPressed: () {
+          AutoRouter.of(context).pop();
+        },
+      ),
+      title: TextWidget(
+          text: 'Add Session',
+          color: AppColors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
+          maxline: 1),
     );
   }
 }

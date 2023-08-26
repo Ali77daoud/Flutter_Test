@@ -7,7 +7,3 @@ abstract class AuthRepository {
 
   Future<Either<Failure, UserEntity>> login(UserEntity userEntity);
 }
-
-
-//   Future<Either<Failure, Unit>> postLogout();
-// }

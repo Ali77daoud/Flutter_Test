@@ -36,7 +36,7 @@ Future<void> init() async {
         localDataBase: sl.call(),
       ));
 
-  /// 1. booking sessions
+  /// 2. booking sessions
   // bloc /////////////////////////////////////////////////
   sl.registerFactory(() => BookingCubit(
         getInstructorsDataUseCase: sl.call(),
@@ -54,6 +54,7 @@ Future<void> init() async {
   // dataSource /////////////////////////////////////////////
   sl.registerLazySingleton<BookingLocalDataSource>(
       () => BookingLocalDataSourceImpl(localDataBase: sl.call()));
+  /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

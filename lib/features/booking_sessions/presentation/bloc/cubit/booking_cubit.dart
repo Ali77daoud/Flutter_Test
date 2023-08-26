@@ -137,6 +137,8 @@ class BookingCubit extends Cubit<BookingState> {
     switch (failure.runtimeType) {
       case WrongDataFailure:
         return FailureMessages.wrongDataFailureMessage;
+      case InfoAlreadyExistsFailure:
+        return FailureMessages.infoAlreadyExistsMessage;
       case UnExpectedFailure:
         return FailureMessages.unExpectedFailureMessage;
       default:

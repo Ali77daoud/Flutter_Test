@@ -3,13 +3,10 @@ import 'package:flutter/services.dart';
 
 import 'constants/color_constants.dart';
 
-// final fillTextFormColor = HexColor("#C5C5C5");
-
 final appTheme = ThemeData(
   primarySwatch: Colors.blue,
   brightness: Brightness.light,
   appBarTheme: AppBarTheme(
-      //for status bar
       systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: AppColors.blackLight,
           statusBarIconBrightness: Brightness.light),
@@ -18,7 +15,6 @@ final appTheme = ThemeData(
       iconTheme: const IconThemeData(color: AppColors.primaryDark),
       backgroundColor: Colors.grey.shade50,
       elevation: 0),
-  // text form field theme
   inputDecorationTheme: InputDecorationTheme(
     fillColor: AppColors.white,
     filled: true,

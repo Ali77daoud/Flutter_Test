@@ -31,6 +31,8 @@ class BookingRepositoryImpl implements BookingRepository {
       return right(res);
     } on UnExpectedException {
       return left(UnExpectedFailure());
+    } on InfoAlreadyExistsException {
+      return left(InfoAlreadyExistsFailure());
     }
   }
 

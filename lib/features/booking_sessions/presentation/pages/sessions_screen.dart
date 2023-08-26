@@ -20,43 +20,8 @@ class SessionsScreen extends StatelessWidget {
     final bookingCubit = BookingCubit.get(context);
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primaryDark,
-            centerTitle: true,
-            title: TextWidget(
-                text: 'Your Sessions',
-                color: AppColors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-                maxline: 1),
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.logout,
-                  color: AppColors.white,
-                ),
-                onPressed: () async {
-                  await di.sl<SharedPreferences>().setBool('IS_LOGIN', false);
-                  isLogin = false;
-                  ////////////
-                  // ignore: use_build_context_synchronously
-                  AutoRouter.of(context).pushAndPopUntil(LoginRoute(),
-                      predicate: (route) => false);
-                },
-              )
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: AppColors.secondary,
-              onPressed: () {
-                bookingCubit.getInstructorData();
-                AutoRouter.of(context).push(AddSessionRoute());
-              },
-              child: const Icon(
-                Icons.add_box_outlined,
-                color: AppColors.white,
-              )),
+          appBar: buildAppBar(context),
+          floatingActionButton: buildFloatingButton(bookingCubit, context),
           body: BlocBuilder<BookingCubit, BookingState>(
             builder: (context, state) {
               if (state is GetDataLoadingState) {
@@ -104,6 +69,49 @@ class SessionsScreen extends StatelessWidget {
               }
             },
           )),
+    );
+  }
+
+  Widget buildFloatingButton(BookingCubit bookingCubit, BuildContext context) {
+    return FloatingActionButton(
+        backgroundColor: AppColors.secondary,
+        onPressed: () {
+          bookingCubit.getInstructorData();
+          AutoRouter.of(context).push(AddSessionRoute());
+        },
+        child: const Icon(
+          Icons.add_box_outlined,
+          color: AppColors.white,
+        ));
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: AppColors.primaryDark,
+      centerTitle: true,
+      title: TextWidget(
+          text: 'Your Sessions',
+          color: AppColors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
+          maxline: 1),
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.logout,
+            color: AppColors.white,
+          ),
+          onPressed: () async {
+            await di.sl<SharedPreferences>().setBool('IS_LOGIN', false);
+            isLogin = false;
+            ////////////
+            // ignore: use_build_context_synchronously
+            AutoRouter.of(context)
+                .pushAndPopUntil(LoginRoute(), predicate: (route) => false);
+          },
+        )
+      ],
     );
   }
 }

@@ -7,6 +7,11 @@ class WrongDataFailure extends Failure {
   List<Object?> get props => [];
 }
 
+class InfoAlreadyExistsFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
 class UnExpectedFailure extends Failure {
   @override
   List<Object?> get props => [];

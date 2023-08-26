@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => di.sl<AuthCubit>()),
-        BlocProvider(create: (_) => di.sl<BookingCubit>()..getAllSessions()),
+        BlocProvider(create: (_) => di.sl<BookingCubit>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
-        title: 'Flutter Test',
+        title: 'Booking Sessions',
         routerConfig: _appRouter.config(),
       ),
     );

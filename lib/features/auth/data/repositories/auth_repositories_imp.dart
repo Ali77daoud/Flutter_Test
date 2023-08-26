@@ -20,6 +20,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return right(res);
     } on UnExpectedException {
       return left(UnExpectedFailure());
+    } on InfoAlreadyExistsException {
+      return left(InfoAlreadyExistsFailure());
     }
   }
 
@@ -35,91 +37,3 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 }
-
-
-
-//   AuthRepositoryImpl(
-//       {required this.authRemoteDataSource,
-//       required this.authLocalDataSource,
-//       required this.networkInfo});
-
-//   // login
-//   @override
-//   Future<Either<Failure, UserEntity>> postLogin(LoginEntity loginEntity) async {
-//     final loginModel = LoginModel(
-//         mobileNumber: loginEntity.mobileNumber,
-//         password: loginEntity.password,
-//         fcmToken: loginEntity.fcmToken);
-
-//     if (await networkInfo.isConnected) {
-//       try {
-//         final authResponse = await authRemoteDataSource.postLogin(loginModel);
-//         if (authResponse.data != null) {
-//           await authLocalDataSource
-//               .setToken(authResponse.data!.token.toString());
-//         }
-
-//         if (authResponse.data != null) {
-//           await authLocalDataSource
-//               .setUserId(authResponse.data!.user!.id!.toInt());
-//         }
-
-//         return Right(authResponse);
-//       } on ServerException {
-//         return left(ServerFailure());
-//       }
-//     } else {
-//       return Left(OfflineFailure());
-//     }
-//   }
-
-//   // signup
-//   @override
-//   Future<Either<Failure, UserEntity>> postRegister(
-//       RegisterEntity registerEntity) async {
-//     final registerModel = RegisterModel(
-//         mobileNumber: registerEntity.mobileNumber,
-//         address: registerEntity.address,
-//         fullName: registerEntity.fullName,
-//         password: registerEntity.password,
-//         fcmToken: registerEntity.fcmToken);
-
-//     if (await networkInfo.isConnected) {
-//       try {
-//         final authResponse =
-//             await authRemoteDataSource.postRegister(registerModel);
-
-//         if (authResponse.data != null) {
-//           await authLocalDataSource
-//               .setToken(authResponse.data!.token.toString());
-//         }
-
-//         if (authResponse.data != null) {
-//           await authLocalDataSource
-//               .setUserId(authResponse.data!.user!.id!.toInt());
-//         }
-
-//         return Right(authResponse);
-//       } on ServerException {
-//         return left(ServerFailure());
-//       }
-//     } else {
-//       return Left(OfflineFailure());
-//     }
-//   }
-
-//   @override
-//   Future<Either<Failure, Unit>> postLogout() async {
-//     if (await networkInfo.isConnected) {
-//       try {
-//         await authRemoteDataSource.postLogout();
-
-//         return const Right(unit);
-//       } on ServerException {
-//         return left(ServerFailure());
-//       }
-//     } else {
-//       return Left(OfflineFailure());
-//     }
-//   }
-// }

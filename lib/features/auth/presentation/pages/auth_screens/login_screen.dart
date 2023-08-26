@@ -7,7 +7,6 @@ import 'package:flutter_test_app/core/utils/snackbar_message.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_test_app/features/auth/presentation/bloc/cubit/auth_state.dart';
-import 'package:flutter_test_app/features/auth/presentation/pages/auth_screens/signup_screen.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_page_footer.dart';
 import 'package:flutter_test_app/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +14,7 @@ import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/utils/screen_size_utils.dart';
 import '../../../../../core/widgets/app_buttons.dart';
 import '../../bloc/cubit/auth_cubit.dart';
-import '../../widgets/gradient_headre.dart';
+import '../../widgets/gradient_header.dart';
 import '../../../../../injection_container.dart' as di;
 
 @RoutePage()
@@ -39,19 +38,20 @@ class LoginScreen extends StatelessWidget {
               .sl<SharedPreferences>()
               .setInt('USER_ID', state.userEntity.id!);
           userId = state.userEntity.id!;
-          // ignore: use_build_context_synchronously
-          AutoRouter.of(context)
-              .pushAndPopUntil(const RootRoute(), predicate: (route) => false);
 
-          authCubit.hideLoadingScreen();
+          authCubit.hideLoading();
           // ignore: use_build_context_synchronously
           SnackBarMessage().showSnackBar(
               message: SuccessMessages.loginSuccessMessage,
               backgroundColor: Colors.green,
               context: context);
+
+          // ignore: use_build_context_synchronously
+          AutoRouter.of(context)
+              .pushAndPopUntil(const RootRoute(), predicate: (route) => false);
         }
         if (state is LoginErrorState) {
-          authCubit.hideLoadingScreen();
+          authCubit.hideLoading();
 
           // ignore: use_build_context_synchronously
           SnackBarMessage().showSnackBar(
@@ -142,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                 // AutoRouter.of(context).pushAndPopUntil(const MainRoute(),
                 //     predicate: (route) => false);
                 if (formKey.currentState!.validate()) {
-                  authCubit.showLoadingScreen();
+                  authCubit.showLoading();
                   ///////////////////////
                   final userEntity = UserEntity(
                     userName: userNameKey.text,
@@ -160,7 +160,7 @@ class LoginScreen extends StatelessWidget {
             AuthPageFooter(
               text1: 'Dont have an account?',
               text2: 'SIGN UP',
-              page: SignUpScreen(),
+              page: SignUpRoute(),
             ),
             ///////
             SizedBox(

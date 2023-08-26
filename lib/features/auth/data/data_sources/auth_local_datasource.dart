@@ -18,11 +18,20 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<int> signUp(UserModel userModel) async {
     final db = await localDataBase.database;
-    int res = await db.insert(DataBaseConst.tableName1, userModel.toJson());
-    if (res > 0) {
-      return res;
+
+    final result = await db.query(DataBaseConst.tableName1,
+        where: '${DataBaseConst.username} = ?',
+        whereArgs: [userModel.userName]);
+
+    if (result.isEmpty) {
+      int res = await db.insert(DataBaseConst.tableName1, userModel.toJson());
+      if (res > 0) {
+        return res;
+      } else {
+        throw UnExpectedException();
+      }
     } else {
-      throw UnExpectedException();
+      throw InfoAlreadyExistsException();
     }
   }
 
@@ -40,21 +49,3 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     }
   }
 }
-//   final SharedPreferences sharedPreferences;
-
-//   AuthLocalDataSourceImpl({required this.sharedPreferences});
-//   @override
-//   Future<Unit> setToken(String token) async {
-//     await sharedPreferences.setString('USER_TOKEN', token);
-
-//     return Future.value(unit);
-//   }
-
-//   ////////////////////////////////////////////////
-//   @override
-//   Future<Unit> setUserId(int userId) async {
-//     await sharedPreferences.setInt('USER_ID', userId);
-
-//     return Future.value(unit);
-//   }
-// }

@@ -1,8 +1,6 @@
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
 
 class InstructorModel extends InstructorEntity {
-  // final List<InstructorDataModel> instructors;
-
   const InstructorModel({
     required List<InstructorDataModel> instructors,
   }) : super(instructors: instructors);
@@ -15,10 +13,6 @@ class InstructorModel extends InstructorEntity {
 }
 
 class InstructorDataModel extends InstructorDataEntity {
-  // final String name;
-  // final List<String> availableDays;
-  // final List<AvailableTimeRangeModel> availableTimeRanges;
-
   const InstructorDataModel({
     required String name,
     required List<String> availableDays,
@@ -39,8 +33,6 @@ class InstructorDataModel extends InstructorDataEntity {
 }
 
 class AvailableTimeRangeModel extends AvailableTimeRangeEntity {
-  // final List<String> time;
-
   const AvailableTimeRangeModel({
     required List<String> time,
   }) : super(time: time);

@@ -5,7 +5,6 @@ import 'package:flutter_test_app/core/route/routes.gr.dart';
 class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
-        // add your routes here
         CustomRoute(
           path: '/',
           page: SplashRoute.page,
