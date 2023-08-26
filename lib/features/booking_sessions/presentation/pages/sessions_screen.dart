@@ -12,8 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart' as di;
 
 @RoutePage()
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class SessionsScreen extends StatelessWidget {
+  const SessionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

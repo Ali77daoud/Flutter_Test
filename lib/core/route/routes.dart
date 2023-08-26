@@ -25,8 +25,14 @@ class AppRouter extends $AppRouter {
             durationInMilliseconds: 100),
         ///////////////////////////
         CustomRoute(
-            path: '/MainScreen',
-            page: MainRoute.page,
+            path: '/RootScreen',
+            page: RootRoute.page,
+            transitionsBuilder: TransitionsBuilders.fadeIn,
+            durationInMilliseconds: 100),
+        ///////////////////////////
+        CustomRoute(
+            path: '/SessionsScreen',
+            page: SessionsRoute.page,
             transitionsBuilder: TransitionsBuilders.fadeIn,
             durationInMilliseconds: 100),
         ///////////////////////////

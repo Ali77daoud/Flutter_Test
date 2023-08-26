@@ -60,7 +60,7 @@ class AddSessionScreen extends StatelessWidget {
                       backgroundColor: Colors.green,
                       context: context);
 
-                  AutoRouter.of(context).pushAndPopUntil(const MainRoute(),
+                  AutoRouter.of(context).pushAndPopUntil(const SessionsRoute(),
                       predicate: (route) => false);
                 }
                 if (state is BookSessionErrorState) {

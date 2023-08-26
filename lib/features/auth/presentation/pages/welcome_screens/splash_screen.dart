@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
-import 'package:flutter_test_app/core/database/local_database.dart';
 import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/route/routes.gr.dart';
-import '../../../../../injection_container.dart' as di;
 
 @RoutePage()
 class SplashScreen extends StatefulWidget {
@@ -17,7 +15,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool selected = false;
-  final localDataBase = di.sl<LocalDataBase>();
   @override
   void initState() {
     super.initState();
@@ -26,18 +23,12 @@ class _SplashScreenState extends State<SplashScreen> {
         selected = true;
       });
       Timer(const Duration(seconds: 3, milliseconds: 500), () {
-        initDb();
-        context.router.push(LoginRoute());
         debugPrint('$isLogin islogin');
         isLogin == false
             ? AutoRouter.of(context).replace(LoginRoute())
-            : AutoRouter.of(context).replace(const MainRoute());
+            : AutoRouter.of(context).replace(const RootRoute());
       });
     });
-  }
-
-  void initDb() async {
-    await localDataBase.database;
   }
 
   @override

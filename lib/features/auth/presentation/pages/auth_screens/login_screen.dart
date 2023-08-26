@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
           userId = state.userEntity.id!;
           // ignore: use_build_context_synchronously
           AutoRouter.of(context)
-              .pushAndPopUntil(const MainRoute(), predicate: (route) => false);
+              .pushAndPopUntil(const RootRoute(), predicate: (route) => false);
 
           authCubit.hideLoadingScreen();
           // ignore: use_build_context_synchronously

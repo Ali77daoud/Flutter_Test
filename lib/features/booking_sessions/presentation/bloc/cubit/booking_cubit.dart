@@ -106,6 +106,8 @@ class BookingCubit extends Cubit<BookingState> {
     instructor = data.instructors[0].name;
     day = data.instructors[0].availableDays[0];
     time = data.instructors[0].availableTimeRanges[0].time[0];
+    firstIndex = 0;
+    secondIndex = 0;
     ////////
     instructorData = data;
     emit(GetInstructorDataSuccessState(instructorData: data));
