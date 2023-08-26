@@ -55,7 +55,7 @@ class SessionsScreen extends StatelessWidget {
               },
               child: const Icon(
                 Icons.add_box_outlined,
-                color: AppColors.primaryDark,
+                color: AppColors.white,
               )),
           body: BlocBuilder<BookingCubit, BookingState>(
             builder: (context, state) {

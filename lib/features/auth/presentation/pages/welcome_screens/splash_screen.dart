@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
-import '../../../../../core/constants/color_constants.dart';
 import '../../../../../core/route/routes.gr.dart';
 
 @RoutePage()
@@ -42,16 +41,27 @@ class _SplashScreenState extends State<SplashScreen> {
           body: Stack(
             alignment: Alignment.center,
             children: [
-              Container(decoration: const BoxDecoration(color: AppColors.grey)),
+              Container(
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/pictures/splash_backgrounf.png',
+                          ),
+                          fit: BoxFit.cover))),
               AnimatedContainer(
-                width: selected ? 220 : 70.0,
-                height: selected ? 220 : 70.0,
+                width: selected ? 130 : 60,
+                height: selected ? 130 : 60,
                 alignment: selected
                     ? Alignment.center
                     : AlignmentDirectional.topCenter,
                 duration: const Duration(seconds: 3),
                 curve: Curves.fastOutSlowIn,
-                decoration: const BoxDecoration(color: AppColors.primaryDark),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'assets/pictures/logo.png',
+                        ),
+                        fit: BoxFit.contain)),
               ),
             ],
           ),
