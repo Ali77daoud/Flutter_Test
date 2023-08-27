@@ -4,6 +4,7 @@ import 'package:flutter_test_app/core/errors/failures.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/instructor_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/entities/sessions_entity.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/book_session_usecase.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/delete_session_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_all_sessions_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_instructor_data_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/constants/dropdown_type.dart';
@@ -13,11 +14,13 @@ class BookingCubit extends Cubit<BookingState> {
   final GetInstructorsDataUseCase getInstructorsDataUseCase;
   final BookSessionUseCase bookSessionUseCase;
   final GetAllSessionsUseCase getAllSessionsUseCase;
+  final DeleteSessionUseCase deleteSessionUseCase;
 
   BookingCubit({
     required this.getInstructorsDataUseCase,
     required this.bookSessionUseCase,
     required this.getAllSessionsUseCase,
+    required this.deleteSessionUseCase,
   }) : super(BookingInitialState());
 
   static BookingCubit get(context) => BlocProvider.of(context);
@@ -124,12 +127,22 @@ class BookingCubit extends Cubit<BookingState> {
   }
 
   ///getAllSessions////
-  void getAllSessions() async {
+  Future<void> getAllSessions() async {
     emit(GetDataLoadingState());
     final data = await getAllSessionsUseCase.call();
     ///////
     sessionsData = data;
     emit(GetAllSessionSuccessState(res: data));
+  }
+
+  /// delete Session////////////
+  Future<void> deleteSession(int id) async {
+    final failureOrDeleteSession = await deleteSessionUseCase.call(id);
+    failureOrDeleteSession.fold((failure) {
+      emit(DeleteSessionErrorState(error: _mapFailureToMessage(failure)));
+    }, (res) {
+      emit(DeleteSessionSuccessState());
+    });
   }
 
   //////////////////////////////

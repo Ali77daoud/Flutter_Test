@@ -6,6 +6,7 @@ import 'package:flutter_test_app/core/widgets/text_widget.dart';
 class SessionWidget extends StatelessWidget {
   final String name, day, time;
   final int index;
+  final void Function() onTapDelete;
 
   const SessionWidget({
     super.key,
@@ -13,6 +14,7 @@ class SessionWidget extends StatelessWidget {
     required this.day,
     required this.time,
     required this.index,
+    required this.onTapDelete,
   });
 
   @override
@@ -89,14 +91,13 @@ class SessionWidget extends StatelessWidget {
             child: Container(
               color: AppColors.primaryDark,
               child: Center(
-                child: TextWidget(
-                    text: 'Session',
-                    color: AppColors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    textAlign: TextAlign.start,
-                    maxline: 2),
-              ),
+                  child: IconButton(
+                icon: const Icon(
+                  Icons.delete,
+                  color: AppColors.white,
+                ),
+                onPressed: onTapDelete,
+              )),
             ),
           )
         ],

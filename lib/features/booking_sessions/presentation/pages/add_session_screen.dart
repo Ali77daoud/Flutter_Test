@@ -25,27 +25,30 @@ class AddSessionScreen extends StatelessWidget {
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
-          bookingCubit.getAllSessions();
+          await bookingCubit.getAllSessions();
           return true;
         },
         child: Scaffold(
             appBar: buildAppBar(context),
             body: BlocConsumer<BookingCubit, BookingState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state is BookSessionSuccessState) {
                   bookingCubit.hideLoadingScreen();
-                  bookingCubit.getAllSessions();
+                  await bookingCubit.getAllSessions();
 
+                  // ignore: use_build_context_synchronously
                   SnackBarMessage().showSnackBar(
                       message: SuccessMessages.bookSessionSuccessMessage,
                       backgroundColor: Colors.green,
                       context: context);
 
+                  // ignore: use_build_context_synchronously
                   AutoRouter.of(context).pushAndPopUntil(const SessionsRoute(),
                       predicate: (route) => false);
                 }
                 if (state is BookSessionErrorState) {
                   bookingCubit.hideLoadingScreen();
+                  // ignore: use_build_context_synchronously
                   SnackBarMessage().showSnackBar(
                       message: state.error,
                       backgroundColor: Colors.redAccent,

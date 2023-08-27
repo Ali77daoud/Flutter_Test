@@ -7,4 +7,5 @@ abstract class BookingRepository {
   InstructorEntity getInstructorsData();
   Future<Either<Failure, int>> bookSession(SessionsEntity sessionsEntity);
   Future<List<SessionsEntity>> getAllSessions();
+  Future<Either<Failure, Unit>> deleteSession(int id);
 }

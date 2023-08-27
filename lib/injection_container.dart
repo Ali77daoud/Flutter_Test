@@ -2,6 +2,7 @@ import 'package:flutter_test_app/features/auth/domain/usecases/signup_usecase.da
 import 'package:flutter_test_app/features/booking_sessions/data/data_sources/booking_local_datasource.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/repositories/booking_repository.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/book_session_usecase.dart';
+import 'package:flutter_test_app/features/booking_sessions/domain/usecases/delete_session_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_all_sessions_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/domain/usecases/get_instructor_data_usecase.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
@@ -42,11 +43,13 @@ Future<void> init() async {
         getInstructorsDataUseCase: sl.call(),
         bookSessionUseCase: sl.call(),
         getAllSessionsUseCase: sl.call(),
+        deleteSessionUseCase: sl.call(),
       ));
   // useCase //////////////////////////////////////////////
   sl.registerLazySingleton(() => GetInstructorsDataUseCase(sl.call()));
   sl.registerLazySingleton(() => BookSessionUseCase(sl.call()));
   sl.registerLazySingleton(() => GetAllSessionsUseCase(sl.call()));
+  sl.registerLazySingleton(() => DeleteSessionUseCase(sl.call()));
   // repository ///////////////////////////////////////////
   sl.registerLazySingleton<BookingRepository>(() => BookingRepositoryImpl(
         bookingLocalDataSource: sl.call(),

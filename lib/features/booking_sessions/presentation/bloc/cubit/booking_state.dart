@@ -94,3 +94,15 @@ class BookSessionLoadingState extends BookingState {
   @override
   List<Object> get props => [isLoading];
 }
+
+/////////////DeleteSession/////////////////////////
+class DeleteSessionSuccessState extends BookingState {}
+
+class DeleteSessionErrorState extends BookingState {
+  final String error;
+
+  const DeleteSessionErrorState({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

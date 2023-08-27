@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_app/core/constants/color_constants.dart';
+import 'package:flutter_test_app/core/constants/success_messages.dart';
 import 'package:flutter_test_app/core/route/routes.gr.dart';
+import 'package:flutter_test_app/core/utils/snackbar_message.dart';
 import 'package:flutter_test_app/core/variables/app_var.dart';
 import 'package:flutter_test_app/core/widgets/text_widget.dart';
 import 'package:flutter_test_app/features/booking_sessions/presentation/bloc/cubit/booking_cubit.dart';
@@ -22,7 +24,28 @@ class SessionsScreen extends StatelessWidget {
       child: Scaffold(
           appBar: buildAppBar(context),
           floatingActionButton: buildFloatingButton(bookingCubit, context),
-          body: BlocBuilder<BookingCubit, BookingState>(
+          body: BlocConsumer<BookingCubit, BookingState>(
+            listener: (context, state) async {
+              if (state is DeleteSessionSuccessState) {
+                bookingCubit.hideLoadingScreen();
+
+                await bookingCubit.getAllSessions();
+
+                // ignore: use_build_context_synchronously
+                SnackBarMessage().showSnackBar(
+                    message: SuccessMessages.deleteSessionSuccessMessage,
+                    backgroundColor: Colors.green,
+                    context: context);
+              }
+              if (state is DeleteSessionErrorState) {
+                bookingCubit.hideLoadingScreen();
+                // ignore: use_build_context_synchronously
+                SnackBarMessage().showSnackBar(
+                    message: state.error,
+                    backgroundColor: Colors.redAccent,
+                    context: context);
+              }
+            },
             builder: (context, state) {
               if (state is GetDataLoadingState) {
                 return Container(
@@ -47,11 +70,18 @@ class SessionsScreen extends StatelessWidget {
                         child: ListView.separated(
                             itemBuilder: (context, index) {
                               return SessionWidget(
-                                  name: bookingCubit
-                                      .sessionsData[index].instructorName,
-                                  day: bookingCubit.sessionsData[index].day,
-                                  time: bookingCubit.sessionsData[index].time,
-                                  index: index);
+                                name: bookingCubit
+                                    .sessionsData[index].instructorName,
+                                day: bookingCubit.sessionsData[index].day,
+                                time: bookingCubit.sessionsData[index].time,
+                                index: index,
+                                onTapDelete: () async {
+                                  bookingCubit.showLoadingScreen();
+                                  /////////////////
+                                  await bookingCubit.deleteSession(
+                                      bookingCubit.sessionsData[index].id!);
+                                },
+                              );
                             },
                             separatorBuilder: (context, index) {
                               return const SizedBox(

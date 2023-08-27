@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/core/constants/database_constants.dart';
 import 'package:flutter_test_app/core/database/local_database.dart';
@@ -10,6 +11,7 @@ abstract class BookingLocalDataSource {
   InstructorModel getInstructors();
   Future<int> bookSession(SessionsModel sessionsModel);
   Future<List<SessionsModel>> getAllSessions();
+  Future<Unit> deleteSession(int id);
 }
 
 class BookingLocalDataSourceImpl implements BookingLocalDataSource {
@@ -169,5 +171,22 @@ class BookingLocalDataSourceImpl implements BookingLocalDataSource {
     debugPrint(result.toString());
 
     return result.map((json) => SessionsModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<Unit> deleteSession(int id) async {
+    final db = await localDataBase.database;
+
+    int res = await db.delete(
+      DataBaseConst.tableName2,
+      where: '${DataBaseConst.id} = ?',
+      whereArgs: [id],
+    );
+
+    if (res > 0) {
+      return Future.value(unit);
+    } else {
+      throw UnExpectedException();
+    }
   }
 }

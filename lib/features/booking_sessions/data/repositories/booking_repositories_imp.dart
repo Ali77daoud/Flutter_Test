@@ -37,8 +37,18 @@ class BookingRepositoryImpl implements BookingRepository {
   }
 
   @override
-  Future<List<SessionsEntity>> getAllSessions() {
-    final res = bookingLocalDataSource.getAllSessions();
+  Future<List<SessionsEntity>> getAllSessions() async {
+    final res = await bookingLocalDataSource.getAllSessions();
     return res;
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteSession(int id) async {
+    try {
+      await bookingLocalDataSource.deleteSession(id);
+      return const Right(unit);
+    } on UnExpectedException {
+      return left(UnExpectedFailure());
+    }
   }
 }
