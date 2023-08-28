@@ -77,6 +77,8 @@ class AddSessionScreen extends StatelessWidget {
                                 //////////
                                 bookingCubit.changeFirstIndex();
                                 //////////
+                                bookingCubit.changeSecondIndex();
+                                //////////
                                 bookingCubit.resetDayValue();
                                 //////////
                                 bookingCubit.resetTimeValue();
